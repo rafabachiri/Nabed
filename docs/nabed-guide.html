@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Nabed — Product Guide</title>
+<style>
+  :root{
+    --teal:#0d7a6b; --teal-dark:#074d44; --teal-soft:#c8e6e2;
+    --gold:#d4930a; --gold-soft:#fdf0d0;
+    --orange:#e05c1a; --orange-soft:#fde8d8;
+    --success:#1e7d45; --success-soft:#d0ead9;
+    --bg:#f4f7f6; --surface:#ffffff; --offset:#e8efed;
+    --ink:#1a2e2a; --muted:#5a7a74; --faint:#9ab8b2; --border:#c4d4d0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  @page{ size:A4; margin:0; }
+  html,body{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:var(--surface); line-height:1.55; font-size:11.5pt;
+  }
+  h1,h2,h3,h4{ font-weight:700; letter-spacing:-.01em; line-height:1.2; }
+
+  /* ---------- Page sheets ---------- */
+  .sheet{ width:210mm; min-height:297mm; padding:20mm 18mm; break-after:page; position:relative; }
+  .sheet:last-child{ break-after:auto; }
+  .cover{ break-after:page; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    width:210mm; height:297mm; padding:26mm 22mm;
+    background:linear-gradient(160deg,#0d7a6b 0%, #074d44 100%);
+    color:#fff; display:flex; flex-direction:column; overflow:hidden; position:relative;
+  }
+  .cover .watermark{ position:absolute; right:-40mm; bottom:-40mm; font-size:360pt; opacity:.06; line-height:1; }
+  .brand{ display:flex; align-items:center; gap:14px; }
+  .logo{ width:52px;height:52px;border-radius:13px;background:#fff;color:var(--teal);
+         display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800; }
+  .brand .name{ font-size:24pt; font-weight:800; }
+  .cover .kicker{ margin-top:auto; font-size:12pt; letter-spacing:.28em; text-transform:uppercase; color:var(--teal-soft); }
+  .cover h1{ font-size:42pt; margin:10px 0 14px; }
+  .cover .sub{ font-size:14pt; color:#e8f5f2; max-width:150mm; }
+  .cover .meta{ margin-top:30px; display:flex; gap:10px; flex-wrap:wrap; }
+  .pill{ background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.25);
+         padding:7px 14px; border-radius:999px; font-size:10pt; font-weight:600; }
+  .cover .foot{ margin-top:24px; font-size:9.5pt; color:var(--teal-soft); border-top:1px solid rgba(255,255,255,.2); padding-top:14px; }
+
+  /* ---------- Section headers ---------- */
+  .sec-head{ display:flex; align-items:center; gap:14px; margin-bottom:6px; }
+  .sec-num{ width:34px;height:34px;flex:0 0 34px;border-radius:9px;background:var(--teal-soft);
+            color:var(--teal-dark);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13pt; }
+  .sec-head h2{ font-size:20pt; color:var(--teal-dark); }
+  .sec-sub{ color:var(--muted); margin:2px 0 18px 48px; font-size:11pt; }
+  h3{ font-size:13.5pt; color:var(--ink); margin:18px 0 8px; }
+  p{ margin:0 0 10px; }
+  .lead{ font-size:12.5pt; color:#33514c; }
+
+  /* ---------- Cards / grids ---------- */
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:8px 0 6px; }
+  .card{ border:1px solid var(--border); border-radius:14px; padding:16px 16px; background:var(--surface);
+         break-inside:avoid; }
+  .card .ic{ width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+             font-size:19px;margin-bottom:9px; }
+  .ic.teal{background:var(--teal-soft);} .ic.gold{background:var(--gold-soft);}
+  .ic.orange{background:var(--orange-soft);} .ic.green{background:var(--success-soft);}
+  .card h4{ font-size:12pt; margin-bottom:4px; }
+  .card p{ font-size:10pt; color:var(--muted); margin:0; }
+
+  ul.feat{ list-style:none; margin:6px 0 12px; }
+  ul.feat li{ position:relative; padding:5px 0 5px 26px; font-size:10.8pt; border-bottom:1px solid var(--offset); }
+  ul.feat li:last-child{ border-bottom:none; }
+  ul.feat li::before{ content:"✚"; position:absolute; left:2px; top:5px; color:var(--teal); font-weight:800; font-size:10pt; }
+  ul.feat li b{ color:var(--ink); }
+
+  .callout{ background:var(--offset); border-left:4px solid var(--teal); border-radius:10px;
+            padding:14px 16px; margin:12px 0; font-size:10.6pt; }
+  .callout.gold{ border-left-color:var(--gold); background:var(--gold-soft); }
+
+  /* steps */
+  .steps{ counter-reset:step; margin-top:8px; }
+  .step{ display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--offset); break-inside:avoid; }
+  .step:last-child{ border-bottom:none; }
+  .step .n{ counter-increment:step; flex:0 0 40px; width:40px;height:40px;border-radius:11px;
+            background:var(--teal); color:#fff; font-weight:800; font-size:15pt;
+            display:flex;align-items:center;justify-content:center; }
+  .step .n::before{ content:"0" counter(step); }
+  .step h4{ font-size:12.5pt; }
+  .step p{ font-size:10.4pt; color:var(--muted); margin:2px 0 0; }
+
+  /* table */
+  table{ width:100%; border-collapse:collapse; margin:10px 0; font-size:10.3pt; }
+  th,td{ text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ background:var(--offset); color:var(--teal-dark); font-size:9pt; text-transform:uppercase; letter-spacing:.04em; }
+  tr:nth-child(even) td{ background:#fbfdfc; }
+
+  .toc-item{ display:flex; align-items:baseline; gap:10px; padding:9px 0; border-bottom:1px solid var(--offset); font-size:11.5pt; }
+  .toc-item .tnum{ color:var(--teal); font-weight:800; width:26px; }
+  .toc-item .tdots{ flex:1; border-bottom:1px dotted var(--faint); transform:translateY(-3px); }
+
+  .page-foot{ position:absolute; bottom:12mm; left:18mm; right:18mm; display:flex; justify-content:space-between;
+              font-size:8.5pt; color:var(--faint); border-top:1px solid var(--offset); padding-top:7px; }
+  .tag{ display:inline-block; font-size:8.5pt; font-weight:700; padding:2px 9px; border-radius:999px; }
+  .tag.live{ background:var(--success-soft); color:var(--success); }
+  .tag.soon{ background:var(--offset); color:var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="watermark">✚</div>
+  <div class="brand">
+    <div class="logo">✚</div>
+    <div class="name">Nabed</div>
+  </div>
+
+  <div class="kicker">Product Guide</div>
+  <h1>Master Medical English.<br/>Earn your future.</h1>
+  <p class="sub">A gamified, bilingual (French ↔ English) learning platform built for Algerian
+     medical students and their teachers — flashcards, games, courses, clinical cases and more.</p>
+
+  <div class="meta">
+    <span class="pill">Web &amp; Installable App</span>
+    <span class="pill">Français / English</span>
+    <span class="pill">Students · Teachers · Admins</span>
+  </div>
+
+  <div class="foot">
+    Prepared for our client · Feature &amp; functionality overview · نبض المعرفة الطبية
+  </div>
+</div>
+
+<!-- ============ TOC + OVERVIEW ============ -->
+<div class="sheet">
+  <div class="sec-head"><div class="sec-num">①</div><h2>What is Nabed?</h2></div>
+  <p class="sec-sub">The problem it solves and who it serves.</p>
+
+  <p class="lead">Nabed (“pulse” in Arabic) helps medical students bridge the gap from French to
+     English medical terminology — the language of international research, journals and practice.</p>
+  <p>Most quality medical-English tools are paid, generic, and not aligned with the Algerian
+     curriculum. Nabed is a free, curriculum-aligned, fully bilingual alternative that turns
+     vocabulary mastery into a daily habit through game mechanics, spaced repetition and
+     teacher-guided learning.</p>
+
+  <h3>Who it's for</h3>
+  <div class="grid">
+    <div class="card"><div class="ic teal">👨‍⚕️</div><h4>Students</h4>
+      <p>Learn, practise and play their way through medical English, tracking real progress.</p></div>
+    <div class="card"><div class="ic gold">👩‍🏫</div><h4>Teachers</h4>
+      <p>Create classes, assign work, publish courses &amp; videos, and monitor every student.</p></div>
+    <div class="card"><div class="ic orange">⚙️</div><h4>Administrators</h4>
+      <p>Manage the vocabulary database, users, content and teacher approvals.</p></div>
+    <div class="card"><div class="ic green">🌍</div><h4>Any device</h4>
+      <p>Runs in the browser and installs to phones as an app (PWA) — works offline too.</p></div>
+  </div>
+
+  <h3 style="margin-top:22px">Inside this guide</h3>
+  <div class="toc-item"><span class="tnum">1</span><span>What is Nabed?</span><span class="tdots"></span></div>
+  <div class="toc-item"><span class="tnum">2</span><span>Feature overview at a glance</span><span class="tdots"></span></div>
+  <div class="toc-item"><span class="tnum">3</span><span>The student experience</span><span class="tdots"></span></div>
+  <div class="toc-item"><span class="tnum">4</span><span>Gamification &amp; motivation</span><span class="tdots"></span></div>
+  <div class="toc-item"><span class="tnum">5</span><span>For teachers</span><span class="tdots"></span></div>
+  <div class="toc-item"><span class="tnum">6</span><span>For administrators</span><span class="tdots"></span></div>
+  <div class="toc-item"><span class="tnum">7</span><span>Bilingual interface &amp; accessibility</span><span class="tdots"></span></div>
+  <div class="toc-item"><span class="tnum">8</span><span>Installable mobile app (PWA)</span><span class="tdots"></span></div>
+  <div class="toc-item"><span class="tnum">9</span><span>How it works · Technology · Security</span><span class="tdots"></span></div>
+
+  <div class="page-foot"><span>Nabed — Product Guide</span><span>What is Nabed?</span></div>
+</div>
+
+<!-- ============ FEATURE OVERVIEW ============ -->
+<div class="sheet">
+  <div class="sec-head"><div class="sec-num">②</div><h2>Feature overview at a glance</h2></div>
+  <p class="sec-sub">Everything the platform offers, grouped by area.</p>
+
+  <div class="grid">
+    <div class="card"><div class="ic teal">🧠</div><h4>Smart Flashcards (SM-2)</h4>
+      <p>A scientific spaced-repetition algorithm schedules each term right before you'd forget it.</p></div>
+    <div class="card"><div class="ic teal">📚</div><h4>Learn by Body System</h4>
+      <p>Vocabulary organised into systems &amp; modules with progress tracking and inline quizzes.</p></div>
+    <div class="card"><div class="ic teal">🎓</div><h4>Advanced Medical English</h4>
+      <p>Topic deep-dives (cardiology, pharmacology, critical care…) beyond the core curriculum.</p></div>
+    <div class="card"><div class="ic orange">🎮</div><h4>5 Medical Games</h4>
+      <p>Term Blast, Anagram, Medical Roots, Diagnostic Match and more — learn while playing.</p></div>
+    <div class="card"><div class="ic teal">🔀</div><h4>FR ↔ EN Translator</h4>
+      <p>Search a medical database with definitions, phonetics, roots and audio pronunciation.</p></div>
+    <div class="card"><div class="ic teal">🎙️</div><h4>Active Practice</h4>
+      <p>Pronunciation, listening and writing exercises that build real-world skills.</p></div>
+    <div class="card"><div class="ic green">🩺</div><h4>Clinical Cases</h4>
+      <p>Bilingual real-world scenarios with key vocabulary and comprehension questions.</p></div>
+    <div class="card"><div class="ic orange">🎬</div><h4>Medical Videos</h4>
+      <p>A library of teaching videos added by teachers and administrators.</p></div>
+    <div class="card"><div class="ic teal">📘</div><h4>Courses</h4>
+      <p>Structured courses created by teachers, with descriptions and linked materials.</p></div>
+    <div class="card"><div class="ic orange">❤️</div><h4>Favorites</h4>
+      <p>Save words, videos and courses to a personal favorites hub for quick access.</p></div>
+    <div class="card"><div class="ic gold">🏆</div><h4>Leaderboard &amp; Badges</h4>
+      <p>XP, levels, daily streaks, badges and national / university rankings.</p></div>
+    <div class="card"><div class="ic gold">👩‍🏫</div><h4>Teacher Tools</h4>
+      <p>Classes, assignments, reports and content publishing in real time.</p></div>
+  </div>
+
+  <div class="callout">
+    <b>Status:</b> the items above are built and working in the application
+    <span class="tag live">LIVE</span>. A few advanced extras — real-time multiplayer Duel and the
+    drag-and-drop Anatomy game — are planned <span class="tag soon">COMING SOON</span> and already
+    visible as upcoming in the app.
+  </div>
+
+  <div class="page-foot"><span>Nabed — Product Guide</span><span>Feature overview</span></div>
+</div>
+
+<!-- ============ STUDENT EXPERIENCE ============ -->
+<div class="sheet">
+  <div class="sec-head"><div class="sec-num">③</div><h2>The student experience</h2></div>
+  <p class="sec-sub">A guided daily loop: learn → practise → play → track.</p>
+
+  <h3>Personal dashboard</h3>
+  <p>On sign-in, students land on a personalised home screen showing their streak, level and XP,
+     a daily challenge, quick stats (words learned, weekly XP, duels won), recommended modules,
+     a practice hub and a peek at the weekly leaderboard.</p>
+
+  <h3>Core learning tools</h3>
+  <ul class="feat">
+    <li><b>Learn:</b> browse vocabulary by body system &amp; year; each module shows progress and ends with a 10-question quiz.</li>
+    <li><b>Advanced English:</b> rich topic articles (e.g. cardiovascular disorders, clinical pharmacology, critical care) with key bilingual terms.</li>
+    <li><b>Flashcards:</b> a spaced-repetition (SM-2) engine surfaces due cards and adapts to each learner's memory.</li>
+    <li><b>Translator:</b> instant FR↔EN search with definitions, examples, phonetics, word roots and text-to-speech audio.</li>
+    <li><b>Practice:</b> pronunciation (speech recognition), listening (audio MCQ) and writing exercises.</li>
+    <li><b>Clinical cases:</b> bilingual scenarios that build comprehension and contextual vocabulary.</li>
+  </ul>
+
+  <h3>Content &amp; personalisation</h3>
+  <ul class="feat">
+    <li><b>Videos &amp; Courses:</b> watch teaching videos and follow teacher-created courses.</li>
+    <li><b>Favorites:</b> bookmark any word, video or course and find them all in one tabbed hub.</li>
+    <li><b>Profile:</b> level, XP progress, streak, words learned, earned badges and saved words.</li>
+  </ul>
+
+  <div class="callout gold">
+    <b>Designed for habit.</b> Every action earns XP, every day extends a streak, and the spaced-repetition
+    system keeps bringing learners back at exactly the right moment — turning study into a game they want to win.
+  </div>
+
+  <div class="page-foot"><span>Nabed — Product Guide</span><span>Student experience</span></div>
+</div>
+
+<!-- ============ GAMIFICATION ============ -->
+<div class="sheet">
+  <div class="sec-head"><div class="sec-num">④</div><h2>Gamification &amp; motivation</h2></div>
+  <p class="sec-sub">The mechanics that keep students engaged and coming back.</p>
+
+  <div class="grid">
+    <div class="card"><div class="ic gold">⭐</div><h4>XP &amp; Levels</h4>
+      <p>Every quiz, game, flashcard and exercise awards XP. XP unlocks levels from “Student” all the way to “Professor”.</p></div>
+    <div class="card"><div class="ic orange">🔥</div><h4>Daily Streaks</h4>
+      <p>Consecutive active days build a streak — a powerful nudge to return every day.</p></div>
+    <div class="card"><div class="ic gold">🏅</div><h4>Badges</h4>
+      <p>Achievements unlock automatically from real progress (first word, 7-day streak, 100 words, perfect quiz…).</p></div>
+    <div class="card"><div class="ic teal">🏆</div><h4>Leaderboards</h4>
+      <p>Compete nationally or filter by your own university to defend your cohort's honour.</p></div>
+  </div>
+
+  <h3>The five medical games</h3>
+  <table>
+    <tr><th>Game</th><th>What you do</th><th>Reward</th></tr>
+    <tr><td>Term Blast</td><td>Pick the correct English translation against the clock</td><td>+8 XP / answer</td></tr>
+    <tr><td>Anagram</td><td>Reorder scrambled letters into the medical term</td><td>+10 XP / answer</td></tr>
+    <tr><td>Medical Roots</td><td>Identify the root, prefix or suffix of a term</td><td>+12 XP / answer</td></tr>
+    <tr><td>Diagnostic Match</td><td>Match terms to their English definitions</td><td>+15 XP / pair</td></tr>
+    <tr><td>The Duel <span class="tag soon">SOON</span></td><td>Real-time head-to-head against another student</td><td>+50 XP / win</td></tr>
+  </table>
+
+  <h3>Level progression</h3>
+  <p>Levels carry meaningful medical titles that reflect a real career path —
+     Student → Apprentice → Intern → Resident → Practitioner → Specialist → Physician →
+     Head of Clinic → Professor — giving long-term goals beyond a single session.</p>
+
+  <div class="page-foot"><span>Nabed — Product Guide</span><span>Gamification</span></div>
+</div>
+
+<!-- ============ TEACHERS ============ -->
+<div class="sheet">
+  <div class="sec-head"><div class="sec-num">⑤</div><h2>For teachers</h2></div>
+  <p class="sec-sub">Run classes and guide students with real-time insight.</p>
+
+  <div class="steps">
+    <div class="step"><div class="n"></div><div><h4>Create classes</h4>
+      <p>Set up a class and share an auto-generated join code; students join in one tap.</p></div></div>
+    <div class="step"><div class="n"></div><div><h4>Assign targeted work</h4>
+      <p>Create assignments by type (quiz, flashcards, pronunciation, listening, writing, cases) with due dates and XP rewards.</p></div></div>
+    <div class="step"><div class="n"></div><div><h4>Publish content</h4>
+      <p>Add medical videos and build courses that appear instantly for students.</p></div></div>
+    <div class="step"><div class="n"></div><div><h4>Track progress</h4>
+      <p>Per-class reports: students active today, average XP and average streak, plus a roster with each student's stats.</p></div></div>
+  </div>
+
+  <div class="callout">
+    <b>Tailored teacher profile.</b> Teachers get a dedicated profile focused on their classes,
+    students reached and tenure — separate from the student XP/level view. New teacher accounts
+    are reviewed and approved by an administrator before activation, keeping the platform trusted.
+  </div>
+
+  <h3>At a glance</h3>
+  <ul class="feat">
+    <li><b>Dashboard:</b> classes, total students, active assignments and quick actions.</li>
+    <li><b>Classes:</b> rosters with XP &amp; streak per student, copyable join codes.</li>
+    <li><b>Assignments:</b> create, schedule and manage; students see them in their feed.</li>
+    <li><b>Reports:</b> class-level engagement and performance summaries.</li>
+  </ul>
+
+  <div class="page-foot"><span>Nabed — Product Guide</span><span>For teachers</span></div>
+</div>
+
+<!-- ============ ADMIN + BILINGUAL + PWA ============ -->
+<div class="sheet">
+  <div class="sec-head"><div class="sec-num">⑥</div><h2>For administrators</h2></div>
+  <p class="sec-sub">Full control of content, people and quality.</p>
+  <ul class="feat">
+    <li><b>Overview:</b> live counts of students, words and pending teacher requests.</li>
+    <li><b>Teacher approvals:</b> review and approve or reject new teacher accounts.</li>
+    <li><b>Vocabulary management:</b> add, edit and organise medical terms and modules.</li>
+    <li><b>User management:</b> search and filter every account by role.</li>
+    <li><b>Content:</b> publish videos and advanced topics across the platform.</li>
+  </ul>
+
+  <div class="sec-head" style="margin-top:26px"><div class="sec-num">⑦</div><h2>Bilingual &amp; accessible</h2></div>
+  <p class="sec-sub">Built for French and English speakers alike.</p>
+  <div class="grid">
+    <div class="card"><div class="ic teal">🌐</div><h4>One-tap language switch</h4>
+      <p>The entire interface switches between Français and English; the learning content stays bilingual by design.</p></div>
+    <div class="card"><div class="ic teal">🌙</div><h4>Light &amp; dark mode</h4>
+      <p>A floating control toggles theme and language from anywhere, day or night.</p></div>
+  </div>
+
+  <div class="sec-head" style="margin-top:26px"><div class="sec-num">⑧</div><h2>Installable mobile app</h2></div>
+  <p class="sec-sub">A real app experience without the app-store friction.</p>
+  <div class="grid">
+    <div class="card"><div class="ic teal">📲</div><h4>Add to home screen</h4>
+      <p>Install Nabed on Android, iPhone or desktop — it launches full-screen with its own icon.</p></div>
+    <div class="card"><div class="ic green">📶</div><h4>Works offline</h4>
+      <p>Core screens stay available without a connection, with a friendly offline page as fallback.</p></div>
+  </div>
+  <div class="callout">
+    <b>Future-ready.</b> Because the app is already installable, publishing to the Apple App Store
+    and Google Play later is a straightforward next step when desired.
+  </div>
+
+  <div class="page-foot"><span>Nabed — Product Guide</span><span>Admin · Bilingual · App</span></div>
+</div>
+
+<!-- ============ HOW IT WORKS + TECH ============ -->
+<div class="sheet">
+  <div class="sec-head"><div class="sec-num">⑨</div><h2>How it works</h2></div>
+  <p class="sec-sub">From sign-up to mastery in three simple steps.</p>
+  <div class="steps">
+    <div class="step"><div class="n"></div><div><h4>Create an account</h4>
+      <p>Free and instant. Students choose their study year and priority systems; teachers submit a request for approval.</p></div></div>
+    <div class="step"><div class="n"></div><div><h4>Learn with flashcards &amp; modules</h4>
+      <p>The spaced-repetition engine plans reviews while modules, the translator and practice build breadth.</p></div></div>
+    <div class="step"><div class="n"></div><div><h4>Play, compete &amp; climb</h4>
+      <p>Earn XP through games and exercises, keep a daily streak, unlock badges and rise up the leaderboard.</p></div></div>
+  </div>
+
+  <h3>Technology &amp; reliability</h3>
+  <p>Nabed is built on a modern, proven stack designed for speed, security and easy growth.</p>
+  <table>
+    <tr><th>Area</th><th>Approach</th></tr>
+    <tr><td>Application</td><td>Next.js (React) — fast, SEO-friendly, mobile-first interface.</td></tr>
+    <tr><td>Data &amp; accounts</td><td>Supabase (managed PostgreSQL) with secure authentication.</td></tr>
+    <tr><td>Security</td><td>Row-Level Security so users only access their own data; teacher accounts are admin-approved.</td></tr>
+    <tr><td>Performance</td><td>Server-rendered pages and cached assets for quick loads, even on modest connections.</td></tr>
+    <tr><td>Delivery</td><td>Installable PWA with offline support; deployable to any modern host.</td></tr>
+  </table>
+
+  <div class="callout gold">
+    <b>In short:</b> Nabed combines the engagement of a game, the science of spaced repetition and
+    the structure of a classroom — in one bilingual, installable platform purpose-built for
+    Algerian medical students.
+  </div>
+
+  <div style="margin-top:30px; text-align:center; color:var(--muted); font-size:10pt;">
+    <div class="logo" style="margin:0 auto 10px;background:var(--teal);color:#fff;">✚</div>
+    <b style="color:var(--ink); font-size:12pt;">Nabed</b><br/>
+    Medical English, mastered. · نبض المعرفة الطبية
+  </div>
+
+  <div class="page-foot"><span>Nabed — Product Guide</span><span>How it works · Technology</span></div>
+</div>
+
+</body>
+</html>
